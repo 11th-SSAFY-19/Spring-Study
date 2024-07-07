@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.ssafy.study.domain.comment.entity.Comment;
 import com.ssafy.study.domain.webtoon.entity.Webtoon;
+import com.ssafy.study.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Episode")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Episode {
+public class Episode extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,6 @@ public class Episode {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "webtoon_id")
     private Webtoon webtoon;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @Column(name = "view_count")
     private Integer viewCount;

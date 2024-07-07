@@ -1,5 +1,5 @@
 privacy.yml
-*/resources/secrets
+*/resources/secrets/
 
 HELP.md
 .gradle

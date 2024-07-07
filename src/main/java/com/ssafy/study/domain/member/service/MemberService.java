@@ -5,6 +5,7 @@ import com.ssafy.study.domain.member.entity.Member;
 import com.ssafy.study.domain.member.repository.MemberRepository;
 import com.ssafy.study.global.common.BaseException;
 import com.ssafy.study.global.common.BaseResponseStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,9 +24,7 @@ public class MemberService {
                 memberDto.getLoginId(),
                 memberDto.getPassword(),
                 memberDto.getNickname(),
-                memberDto.getAge(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                memberDto.getAge()
         );
         return memberRepository.save(member);
     }
@@ -35,7 +34,8 @@ public class MemberService {
         if (member.isPresent()) {
             return member.get();
         } else {
-            throw new BaseException(BaseResponseStatus.MEMBER_NOT_FOUND);
+//            throw new BaseException(BaseResponseStatus.MEMBER_NOT_FOUND);
+            throw new EntityNotFoundException("Member not found with id: " + id);
         }
     }
 }

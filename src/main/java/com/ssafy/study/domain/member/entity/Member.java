@@ -1,5 +1,6 @@
 package com.ssafy.study.domain.member.entity;
 
+import com.ssafy.study.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,20 +36,11 @@ public class Member {
     @Column(name = "age")
     private Integer age;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    public Member(String loginId, String password, String nickname, Integer age, LocalDateTime createdAt,
-                  LocalDateTime updatedAt) {
+    public Member(String loginId, String password, String nickname, Integer age) {
         this.loginId = loginId;
         this.password = password;
         this.name = nickname;
         this.age = age;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.ssafy.study.domain.webtoon.entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import java.time.LocalDateTime;
 
+import com.ssafy.study.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Webtoon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Webtoon {
+public class Webtoon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,23 +36,13 @@ public class Webtoon {
     @Column(name = "publication_status")
     private String publicationStatus;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     @Column(name = "noYouth")
     private boolean noYouth;
 
     @Builder
-    public Webtoon(Long webtoonId, String title, String publicationStatus,
-                   LocalDateTime createdAt, LocalDateTime updatedAt, boolean noYouth) {
-        this.webtoonId = webtoonId;
+    public Webtoon(String title, String publicationStatus, boolean noYouth) {
         this.title = title;
         this.publicationStatus = publicationStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.noYouth = noYouth;
     }
 }

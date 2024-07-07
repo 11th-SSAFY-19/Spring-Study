@@ -24,6 +24,8 @@ public enum BaseResponseStatus {
     // members
     EMPTY_MEMBER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
 
+    // webtoons
+
     /**
      * 3000 : Response 오류
      */
@@ -31,7 +33,11 @@ public enum BaseResponseStatus {
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
     // members
-    MEMBER_NOT_FOUND(false, 3013, "회원을 찾을 수 없습니다."),
+    MEMBER_NOT_FOUND(false, 3010, "회원을 찾을 수 없습니다."),
+
+    // webtoons
+    WEBTOON_NOT_FOUND(false, 3020, "회원을 찾을 수 없습니다."),
+
 
     /**
      * 4000 : Database, Server 오류
