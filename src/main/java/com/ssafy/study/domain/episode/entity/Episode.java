@@ -34,26 +34,27 @@ public class Episode extends BaseTimeEntity {
     @Column(name = "view_count")
     private Integer viewCount;
 
-
     @OneToMany(mappedBy = "episode")
     private List<Comment> commentList= new ArrayList<>();
 
     @Builder
-    private Episode(Long episodeId, String title, Webtoon webtoon, LocalDateTime createdAt, LocalDateTime updatedAt,
-                    Integer viewCount) {
-        this.episodeId = episodeId;
+    private Episode(String title, Webtoon webtoon) {
         this.title = title;
         this.webtoon = webtoon;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.viewCount = viewCount;
+        this.viewCount = 0;
     }
 
-    public Long getEpisodeId() {
-        return episodeId;
+    @Override
+    public String toString() {
+        return "Episode{" +
+                "episodeId=" + episodeId +
+                ", title='" + title + '\'' +
+                ", webtoon=" + webtoon +
+                ", viewCount=" + viewCount +
+                ", commentList=" + commentList +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }

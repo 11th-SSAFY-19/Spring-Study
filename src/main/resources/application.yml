@@ -6,6 +6,9 @@ spring:
     url: jdbc:mysql://${db.host}:${db.port}/${db.database}?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: ${db.username}
     password: ${db.password}
+#  jackson:
+#    serialization:
+#      fail-on-empty-beans: false
   jpa:
     hibernate:
       ddl-auto: update
