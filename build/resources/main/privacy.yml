@@ -1,0 +1,6 @@
+db:
+  username : ssafy
+  password : ssafy
+  host : localhost
+  database : mySchema
+  port : 3306
