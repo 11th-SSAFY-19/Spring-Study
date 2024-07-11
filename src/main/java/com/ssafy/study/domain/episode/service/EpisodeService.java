@@ -1,12 +1,12 @@
 package com.ssafy.study.domain.episode.service;
 
-import com.ssafy.study.domain.episode.dto.CreateEpisodeRequestDto;
-import com.ssafy.study.domain.episode.dto.GetEpisodeResponseDto;
-import com.ssafy.study.domain.episode.dto.GetEpisodesResponseDto;
+import com.ssafy.study.domain.episode.ui.dto.CreateEpisodeRequestDto;
+import com.ssafy.study.domain.episode.ui.dto.GetEpisodeResponseDto;
+import com.ssafy.study.domain.episode.ui.dto.GetEpisodesResponseDto;
 import com.ssafy.study.domain.episode.entity.Episode;
-import com.ssafy.study.domain.episode.repository.EpisodeRepository;
+import com.ssafy.study.domain.episode.dao.EpisodeRepository;
 import com.ssafy.study.domain.webtoon.entity.Webtoon;
-import com.ssafy.study.domain.webtoon.repository.WebtoonRepository;
+import com.ssafy.study.domain.webtoon.dao.WebtoonRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
