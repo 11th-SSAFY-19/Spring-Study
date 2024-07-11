@@ -1,12 +1,11 @@
 package com.ssafy.study.domain.episode.entity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
 import com.ssafy.study.domain.comment.entity.Comment;
 import com.ssafy.study.domain.webtoon.entity.Webtoon;
-import com.ssafy.study.global.common.BaseTimeEntity;
+import com.ssafy.study.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

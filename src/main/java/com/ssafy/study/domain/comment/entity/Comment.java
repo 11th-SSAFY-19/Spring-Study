@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.ssafy.study.domain.episode.entity.Episode;
 import com.ssafy.study.domain.member.entity.Member;
+import com.ssafy.study.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Comment")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,24 +42,6 @@ public class Comment {
     @JoinColumn(name = "episode_id")
     private Episode episode;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    public Long getCommentId() {
-        return commentId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Episode getEpisode() {
-        return episode;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -65,11 +49,10 @@ public class Comment {
         return Objects.equals(commentId, comment.commentId);
     }
 
-    public Comment(String content, Member member, Episode episode, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    @Builder
+    public Comment(String content, Member member, Episode episode) {
         this.content = content;
         this.member = member;
         this.episode = episode;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }
