@@ -30,7 +30,7 @@ public class Webtoon extends BaseTimeEntity {
     @Column(name = "publication_status")
     private String publicationStatus;
 
-    @Column(name = "noYouth")
+    @Column(name = "no_youth")
     private boolean noYouth;
 
     @Builder
