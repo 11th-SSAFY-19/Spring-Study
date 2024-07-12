@@ -13,6 +13,7 @@ import com.ssafy.study.global.common.exception.BaseException;
 import com.ssafy.study.global.common.response.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class CommentService {
     private final EpisodeRepository episodeRepository;
 
 
+    @Transactional(readOnly = false)
     public void create(CommentRequest.CommentDto commentDto) {
         Episode episode = episodeRepository.findById(commentDto.episodeId())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.EPISODE_NOT_FOUND));
@@ -33,6 +35,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional(readOnly = true)
     public CommentResponse.CommentInfoDto findByCommentId(Long commentId) {
         Comment comment = commentRepository.findByCommentWithMemberAndEpisodeAndWebtoon(commentId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.COMMENT_NOT_FOUND));
