@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/episode")
 public class EpisodeController {
 
     private final EpisodeService episodeService;
 
-    @PostMapping("/api/episode")
+    @PostMapping
     public ResponseEntity<Episode> addEpisode(@RequestBody AddEpisodeRequest request) {
         Episode savedEpisode = episodeService.save(request);
 
@@ -25,7 +26,7 @@ public class EpisodeController {
     }
 
 
-    @GetMapping("/api/episode/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EpisodeResponse> findEpisode(@PathVariable long id) {
         Episode episode = episodeService.findById(id);
 
@@ -34,7 +35,7 @@ public class EpisodeController {
     }
 
 
-    @DeleteMapping("/api/episode/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEpisode(@PathVariable long id) {
         episodeService.delete(id);
 
@@ -43,7 +44,7 @@ public class EpisodeController {
     }
 
 
-    @PutMapping("/api/episode/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Episode> updateEpisode(@PathVariable long id, @RequestBody UpdateEpisodeRequest request) {
         Episode updatedEpisode = episodeService.update(id, request);
 

@@ -59,7 +59,7 @@ public class Episode {
     private LocalDateTime freeReleaseDate;
 
     @Builder
-    public Episode(Long id, String title, String content, String postscript, Webtoon webtoon, List<Comment> commentList, LocalDateTime createdAt, LocalDateTime updatedAt, Integer views, boolean isPublic, int neededCookieAmount, LocalDateTime freeReleaseDate) {
+    private Episode(Long id, String title, String content, String postscript, Webtoon webtoon, List<Comment> commentList, LocalDateTime createdAt, LocalDateTime updatedAt, Integer views, boolean isPublic, int neededCookieAmount, LocalDateTime freeReleaseDate) {
         this.id = id;
         this.title = title;
         this.content = content;

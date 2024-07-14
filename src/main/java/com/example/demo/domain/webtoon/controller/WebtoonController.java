@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/webtoon")
 public class WebtoonController {
 
     private final WebtoonService webtoonService;
 
-    @PostMapping("/api/webtoon")
+    @PostMapping
     public ResponseEntity<Webtoon> addWebtoon(@RequestBody AddWebtoonRequest request) {
         Webtoon savedWebtoon = webtoonService.save(request);
 
@@ -24,7 +25,7 @@ public class WebtoonController {
                 .body(savedWebtoon);
     }
 
-    @GetMapping("/api/webtoon/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<WebtoonResponse> findWebtoon(@PathVariable long id) {
         Webtoon webtoon = webtoonService.findById(id);
 
@@ -32,7 +33,7 @@ public class WebtoonController {
                 .body(new WebtoonResponse(webtoon));
     }
 
-    @DeleteMapping("/api/webtoon/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWebtoon(@PathVariable long id) {
         webtoonService.delete(id);
 
@@ -40,7 +41,7 @@ public class WebtoonController {
                 .build();
     }
 
-    @PutMapping("/api/webtoon/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Webtoon> updateWebtoon(@PathVariable long id, @RequestBody UpdateWebtoonRequest request) {
         Webtoon updatedWebtoon = webtoonService.update(id, request);
 

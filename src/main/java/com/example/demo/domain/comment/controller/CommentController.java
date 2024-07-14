@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-// @RequestMapping("/api")
+@RequestMapping("/api/comment")
 public class CommentController {
 
     private final CommentService commentService;
 
 
-    @PostMapping("/api/comment")
+    @PostMapping
     public ResponseEntity<Comment> addComment(@RequestBody AddCommentRequest request) {
         Comment savedComment = commentService.save(request);
 
@@ -28,7 +28,7 @@ public class CommentController {
     }
 
 
-    @GetMapping("/api/comment/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CommentResponse> findComment(@PathVariable long id) {
         Comment comment = commentService.findById(id);
 
@@ -37,7 +37,7 @@ public class CommentController {
     }
 
 
-    @DeleteMapping("/api/comment/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable long id) {
         commentService.delete(id);
 
@@ -46,7 +46,7 @@ public class CommentController {
     }
 
 
-    @PutMapping("/api/comment/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Comment> updateComment(@PathVariable long id, @RequestBody UpdateCommentRequest request) {
         Comment updatedComment = commentService.update(id, request);
 

@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/api/member")
+    @PostMapping
     public ResponseEntity<Member> addMember(@RequestBody AddMemberRequest request) {
         Member savedMember = memberService.save(request);
 
@@ -24,7 +25,7 @@ public class MemberController {
                 .body(savedMember);
     }
 
-    @GetMapping("/api/member/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<MemberResponse> findMember(@PathVariable long id) {
         Member member = memberService.findById(id);
 
