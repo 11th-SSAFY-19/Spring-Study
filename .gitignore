@@ -1,4 +1,5 @@
 privacy.yml
+*.log
 */resources/secrets/
 
 HELP.md
