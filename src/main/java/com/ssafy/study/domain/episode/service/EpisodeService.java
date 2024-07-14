@@ -8,6 +8,8 @@ import com.ssafy.study.domain.episode.dao.EpisodeRepository;
 import com.ssafy.study.domain.webtoon.entity.Webtoon;
 import com.ssafy.study.domain.webtoon.dao.WebtoonRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @Service
 public class EpisodeService {
+    private static final Logger log = LoggerFactory.getLogger(EpisodeService.class);
     private final EpisodeRepository episodeRepository;
     private final WebtoonRepository webtoonRepository;
 
@@ -36,13 +39,9 @@ public class EpisodeService {
     }
 
     public GetEpisodeResponseDto getEpisodeById(Long id) {
-        Optional<Episode> episode = episodeRepository.findById(id);
-        if (episode.isPresent()) {
-            return GetEpisodeResponseDto.from(episode.get());
-        } else {
-//            throw new BaseException(BaseResponseStatus.WEBTOON_NOT_FOUND);
-            throw new EntityNotFoundException("Episode not found with id: " + id);
-        }
+        return episodeRepository.findById(id)
+                .map(GetEpisodeResponseDto::from)
+                .orElseThrow(()-> new EntityNotFoundException("Episode not found with id: " + id));
     }
 
     public GetEpisodesResponseDto getAllEpisodesByWebtoonId(Long webtoonId) {
@@ -50,7 +49,6 @@ public class EpisodeService {
                 .orElseThrow(() -> new EntityNotFoundException("Webtoon not found with id: " + webtoonId));
 
         List<Episode> episodeList = episodeRepository.findAllByWebtoon(foundWebtoon);
-
         return GetEpisodesResponseDto.from(episodeList);
     }
 }
