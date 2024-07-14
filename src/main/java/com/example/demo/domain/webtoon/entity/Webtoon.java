@@ -1,5 +1,6 @@
 package com.example.demo.domain.webtoon.entity;
 
+import com.example.demo.global.common.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import java.time.LocalDateTime;
 
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Webtoon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Webtoon {
+public class Webtoon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,27 +36,18 @@ public class Webtoon {
     @Column(name = "publication_status")
     private String publicationStatus;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     @Column(name = "noYouth", columnDefinition = "TINYINT(1)")
     private boolean noYouth;
 
     @Builder
-    public Webtoon(Long webtoonId, String title, String publicationStatus,
-                   LocalDateTime createdAt, LocalDateTime updatedAt, boolean noYouth) {
+    public Webtoon(Long webtoonId, String title, String publicationStatus, boolean noYouth) {
         this.webtoonId = webtoonId;
         this.title = title;
         this.publicationStatus = publicationStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.noYouth = noYouth;
     }
 
-    public void update(String title, String publicationStatus, boolean noYouth) {
+    public void updateAll(String title, String publicationStatus, boolean noYouth) {
         this.title = title;
         this.publicationStatus = publicationStatus;
         this.noYouth = noYouth;

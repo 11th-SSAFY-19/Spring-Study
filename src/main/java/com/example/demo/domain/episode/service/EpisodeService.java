@@ -1,50 +1,56 @@
 package com.example.demo.domain.episode.service;
 
-import com.example.demo.domain.episode.dto.AddEpisodeRequest;
-import com.example.demo.domain.episode.dto.UpdateEpisodeRequest;
 import com.example.demo.domain.episode.entity.Episode;
 import com.example.demo.domain.episode.repository.EpisodeRepository;
+import com.example.demo.domain.episode.ui.dto.CreateEpisodeRequestDto;
+import com.example.demo.domain.episode.ui.dto.GetEpisodeResponseDto;
+import com.example.demo.domain.episode.ui.dto.GetEpisodesResponseDto;
 import com.example.demo.domain.webtoon.entity.Webtoon;
 import com.example.demo.domain.webtoon.repository.WebtoonRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class EpisodeService {
-
     private final EpisodeRepository episodeRepository;
     private final WebtoonRepository webtoonRepository;
 
-
-    public Episode save(AddEpisodeRequest request) {
-//        Webtoon webtoon = webtoonRepository.findById(request.getWebtoonId())
-//                .orElseThrow(() -> new IllegalArgumentException("not found episodeId : " + request.getWebtoonId()));
-
-        Webtoon webtoon = webtoonRepository.getReferenceById(request.getWebtoonId());
-
-        return episodeRepository.save(request.toEntity(webtoon));
+    public EpisodeService(EpisodeRepository episodeRepository, WebtoonRepository webtoonRepository) {
+        this.episodeRepository = episodeRepository;
+        this.webtoonRepository = webtoonRepository;
     }
 
-    public Episode findById(long id) {
-        return episodeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found episodeId : " + id));
+    public Episode createEpisode(CreateEpisodeRequestDto createEpisodeRequestDto) {
+        Webtoon foundWebtoon = webtoonRepository.findById(createEpisodeRequestDto.getWebtoonId())
+                .orElseThrow(() -> new EntityNotFoundException("Webtoon not found with id: " + createEpisodeRequestDto.getWebtoonId()));
+
+        Episode episode = Episode.builder()
+                .title(createEpisodeRequestDto.getTitle())
+                .webtoon(foundWebtoon)
+                .build();
+
+        return episodeRepository.save(episode);
     }
 
-    public void delete(long id) {
-        Episode episode = episodeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found episodeId : " + id));
-
-        episodeRepository.delete(episode);
+    public GetEpisodeResponseDto getEpisodeById(Long id) {
+        Optional<Episode> episode = episodeRepository.findById(id);
+        if (episode.isPresent()) {
+            return GetEpisodeResponseDto.from(episode.get());
+        } else {
+//            throw new BaseException(BaseResponseStatus.WEBTOON_NOT_FOUND);
+            throw new EntityNotFoundException("Episode not found with id: " + id);
+        }
     }
 
-    @Transactional
-    public Episode update(long id, UpdateEpisodeRequest request) {
-        Episode episode = episodeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found episodeId : " + id));
+    public GetEpisodesResponseDto getAllEpisodesByWebtoonId(Long webtoonId) {
+        Webtoon foundWebtoon = webtoonRepository.findById(webtoonId)
+                .orElseThrow(() -> new EntityNotFoundException("Webtoon not found with id: " + webtoonId));
 
-        episode.update(request);
-        return episode;
+        List<Episode> episodeList = episodeRepository.findAllByWebtoon(foundWebtoon);
+
+        return GetEpisodesResponseDto.from(episodeList);
     }
 }

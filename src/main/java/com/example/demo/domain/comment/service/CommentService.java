@@ -1,16 +1,19 @@
 package com.example.demo.domain.comment.service;
 
-import com.example.demo.domain.comment.dto.AddCommentRequest;
-import com.example.demo.domain.comment.dto.UpdateCommentRequest;
+import com.example.demo.domain.comment.service.converter.CommentConverter;
+import com.example.demo.domain.comment.ui.dto.CommentRequest;
 import com.example.demo.domain.comment.entity.Comment;
 import com.example.demo.domain.comment.repository.CommentRepository;
+import com.example.demo.domain.comment.ui.dto.CommentResponse;
 import com.example.demo.domain.episode.entity.Episode;
 import com.example.demo.domain.episode.repository.EpisodeRepository;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repository.MemberRepository;
-import jakarta.transaction.Transactional;
+import com.example.demo.global.common.exception.BaseException;
+import com.example.demo.global.common.response.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,34 +23,19 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final EpisodeRepository episodeRepository;
 
-    public Comment save(AddCommentRequest request) {
-        Member member = memberRepository.findById(request.getMemberId())
-                        .orElseThrow(() -> new IllegalArgumentException("not found memberId : " + request.getMemberId()));
-        Episode episode = episodeRepository.findById(request.getEpisodeId())
-                        .orElseThrow(() -> new IllegalArgumentException("not found episodeId : " + request.getEpisodeId()));
-
-        return commentRepository.save(request.toEntity(member, episode));
+    public void create(CommentRequest.CommentDto commentDto) {
+        Episode episode = episodeRepository.findById(commentDto.episodeId())
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.EPISODE_NOT_FOUND));
+        Member member = memberRepository.findById(commentDto.memberId())
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.MEMBER_NOT_FOUND));
+        Comment comment = CommentConverter
+                .toComment(commentDto.content(), episode, member);
+        commentRepository.save(comment);
     }
 
-    public Comment findById(long id) {
-        return commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found commentId : " + id));
+    public CommentResponse.CommentInfoDto findByCommentId(Long commentId) {
+        Comment comment = commentRepository.findByCommentWithMemberAndEpisodeAndWebtoon(commentId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.COMMENT_NOT_FOUND));
+        return CommentConverter.toCommentInfoDto(comment);
     }
-
-    public void delete(long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found commentId : " + id));
-
-        commentRepository.delete(comment);
-    }
-
-    @Transactional
-    public Comment update(long id, UpdateCommentRequest request) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found commentId : " + id));
-
-        comment.update(request);
-        return comment;
-    }
-
 }
