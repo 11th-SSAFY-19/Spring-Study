@@ -12,20 +12,6 @@
         </encoder>
     </appender>
 
-<!--    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
-<!--            <includeCallerData>true</includeCallerData>-->
-<!--            <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">-->
-<!--                <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>-->
-<!--            </jsonGeneratorDecorator>-->
-<!--            <timestampPattern>${TIME_STAMP_PATTERN}</timestampPattern>-->
-<!--            <fieldNames>-->
-<!--                <version>[ignore]</version>-->
-<!--                <levelValue>[ignore]</levelValue>-->
-<!--            </fieldNames>-->
-<!--        </encoder>-->
-<!--    </appender>-->
-
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>info</level>
@@ -56,16 +42,6 @@
             </fieldNames>
         </encoder>
 
-<!--        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
-<!--            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">-->
-<!--                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">-->
-<!--                    <prettyPrint>true</prettyPrint>-->
-<!--                </jsonFormatter>-->
-<!--                <timestampFormat>yyyy-MM-dd HH:mm:ss.SSS</timestampFormat>-->
-<!--                <timestampFormatTimezoneId>Asia/Seoul</timestampFormatTimezoneId>-->
-<!--                <appendLineSeparator>true</appendLineSeparator>-->
-<!--            </layout>-->
-<!--        </encoder>-->
     </appender>
 
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -98,6 +74,7 @@
         </encoder>
     </appender>
 
+    <!--    TODO 환경별 분리    -->
     <root level="info">
         <appender-ref ref="console"/>
         <appender-ref ref="file"/>
