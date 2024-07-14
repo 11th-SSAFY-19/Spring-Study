@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
+    <property name="LOG_DIR" value="logs"/>
+    <property name="TIME_STAMP_PATTERN" value="yyyy-MM-dd HH:mm:ss.SSS"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
@@ -8,22 +12,60 @@
         </encoder>
     </appender>
 
+<!--    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--            <includeCallerData>true</includeCallerData>-->
+<!--            <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">-->
+<!--                <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>-->
+<!--            </jsonGeneratorDecorator>-->
+<!--            <timestampPattern>${TIME_STAMP_PATTERN}</timestampPattern>-->
+<!--            <fieldNames>-->
+<!--                <version>[ignore]</version>-->
+<!--                <levelValue>[ignore]</levelValue>-->
+<!--            </fieldNames>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/application.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+
+        <file>${LOG_DIR}/application.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>
-                logs/application.%d{yyyy-MM-dd}.%i.log
+                ${LOG_DIR}/application.%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
-        <encoder>
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-            </pattern>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
+            <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">
+                <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            </jsonGeneratorDecorator>
+            <timestampPattern>${TIME_STAMP_PATTERN}</timestampPattern>
+            <fieldNames>
+                <version>[ignore]</version>
+                <levelValue>[ignore]</levelValue>
+            </fieldNames>
         </encoder>
+
+<!--        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+<!--            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">-->
+<!--                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">-->
+<!--                    <prettyPrint>true</prettyPrint>-->
+<!--                </jsonFormatter>-->
+<!--                <timestampFormat>yyyy-MM-dd HH:mm:ss.SSS</timestampFormat>-->
+<!--                <timestampFormatTimezoneId>Asia/Seoul</timestampFormatTimezoneId>-->
+<!--                <appendLineSeparator>true</appendLineSeparator>-->
+<!--            </layout>-->
+<!--        </encoder>-->
     </appender>
 
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -33,20 +75,26 @@
             <onMismatch>DENY</onMismatch>
         </filter>
 
-        <file>logs/error.log</file>
+        <file>${LOG_DIR}/error.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>
-                logs/error.%d{yyyy-MM-dd}.%i.log
+                ${LOG_DIR}/error.%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
-        <encoder>
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-            </pattern>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
+            <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">
+                <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            </jsonGeneratorDecorator>
+            <timestampPattern>${TIME_STAMP_PATTERN}</timestampPattern>
+            <fieldNames>
+                <version>[ignore]</version>
+                <levelValue>[ignore]</levelValue>
+            </fieldNames>
         </encoder>
     </appender>
 
