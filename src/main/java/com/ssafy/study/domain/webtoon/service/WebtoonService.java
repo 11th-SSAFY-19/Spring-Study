@@ -24,9 +24,9 @@ public class WebtoonService {
 
     @Transactional(readOnly = true)
     public WebtoonResponse.WebtoonDto getWebtoonById(Long webtoonId) {
-        Webtoon webtoon = webtoonRepository.findById(webtoonId)
+        return webtoonRepository.findById(webtoonId)
+                .map(WebtoonConverter::toWebtoonDto)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.WEBTOON_NOT_FOUND));
-        return WebtoonConverter.toWebtoonDto(webtoon);
     }
 
     @Transactional(readOnly = false)
