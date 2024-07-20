@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -32,6 +34,9 @@ class EpisodeControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     private CreateEpisodeRequestDto testEpisodeRequestDto;
 
     @BeforeEach
@@ -39,6 +44,10 @@ class EpisodeControllerTest {
         testEpisodeRequestDto = new CreateEpisodeRequestDto();
         testEpisodeRequestDto.setTitle("testTitle");
         testEpisodeRequestDto.setWebtoonId(1L);
+
+        // redis 초기화
+        RedisConnection redisConnection = redisTemplate.getConnectionFactory().getConnection();
+        redisConnection.serverCommands().flushDb();
     }
 
     @Test

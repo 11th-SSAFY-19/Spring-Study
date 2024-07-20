@@ -6,6 +6,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Aspect
 @Slf4j
@@ -26,7 +29,12 @@ public class DuplicateRequestAspect {
      *  중복이면 error / 아니면 requestSet 에 추가
      */
 
-    private Set<String> requestSet = Collections.synchronizedSet(new HashSet<>());
+    private static final long REQUEST_EXPIRATION_TIME = 5;  // 요청 만료 시간
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+//    private Set<String> requestSet = Collections.synchronizedSet(new HashSet<>());
 
     @Pointcut("within(*..*Controller)")
     public void onRequest() {}
@@ -43,6 +51,21 @@ public class DuplicateRequestAspect {
 
         String requestId = joinPoint.getSignature().toLongString();
 
+        // [redis 방식]
+        // 중복 요청인 경우
+        if (isDuplicateRequest(requestId)) {
+            return handleDuplicateRequest();
+        }
+
+        try {
+            return joinPoint.proceed();
+        } finally {
+            // 실행 완료 후 삭제
+            removeRequest(requestId);
+        }
+
+        // [단순 aop 적용 방식]
+        /**
         // 중복 요청인 경우
         if (requestSet.contains(requestId)) {
             return handleDuplicateRequest();
@@ -56,6 +79,18 @@ public class DuplicateRequestAspect {
             // 실행 완료 후 삭제
             requestSet.remove(requestId);
         }
+         */
+    }
+
+    // redis 로 중복요청인지 확인
+    private boolean isDuplicateRequest(String requestId) {
+        Boolean isAbsent = redisTemplate.opsForValue().setIfAbsent(requestId, "in redis", REQUEST_EXPIRATION_TIME, TimeUnit.SECONDS);
+        return isAbsent == null || !isAbsent;
+    }
+
+    // redis 로 요청 지우기
+    private void removeRequest(String requestId) {
+        redisTemplate.delete(requestId);
     }
 
     // 중복 요청에 대한 응답 처리
