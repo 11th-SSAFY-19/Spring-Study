@@ -12,11 +12,4 @@ public class CreateEpisodeRequestDto {
     public Long getWebtoonId() {
         return webtoonId;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setWebtoonId(long webtoonId) {
-        this.webtoonId = webtoonId;
-    }
 }
