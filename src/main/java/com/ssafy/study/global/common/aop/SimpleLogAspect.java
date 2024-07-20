@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 @Aspect     // 이 클래스가 Aspect 클래스임
 @Slf4j
 @Component
-public class SimpleLogAop {
+public class SimpleLogAspect {
 
     // com.ssafy.study 이하, 모든 패키지 이하, 모든 클래스 이하, 모든 메서드에 적용
     @Pointcut("execution(* com.ssafy.study..*(..))")
